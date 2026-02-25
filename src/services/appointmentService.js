@@ -24,3 +24,13 @@ export const fetchAllAppointments = async () => {
   const { data } = await API.get("/appointments");
   return data;
 };
+
+export const fetchMyTherapistProfile = async () => {
+  const { data } = await API.get("/therapists/me");
+  return data;
+};
+
+export const addMyAvailability = async (formData) => {
+  const { data } = await API.post("/therapists/me/availability", formData);
+  return data;
+};

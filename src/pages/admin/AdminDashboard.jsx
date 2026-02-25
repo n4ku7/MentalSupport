@@ -47,6 +47,18 @@ function AdminDashboard() {
             </Link>
           </div>
         </article>
+
+        <article className="card">
+          <h3 className="card-title">User Roles</h3>
+          <p className="card-text">
+            Review all registered users and verify role assignments.
+          </p>
+          <div className="row" style={{ marginTop: 12 }}>
+            <Link className="btn btn-secondary" to="/admin/users">
+              View Users
+            </Link>
+          </div>
+        </article>
       </div>
     </section>
   );

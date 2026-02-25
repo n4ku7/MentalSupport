@@ -51,9 +51,28 @@ export const bookAppointment = async (req, res) => {
 
 export const getMyAppointments = async (req, res) => {
   try {
+    if (req.user.role === "therapist") {
+      const therapistProfile = await Therapist.findOne({ user: req.user._id });
+
+      if (!therapistProfile) {
+        return res.status(404).json({ message: "Therapist profile not found" });
+      }
+
+      const therapistAppointments = await Appointment.find({
+        therapist: therapistProfile._id,
+      })
+        .populate("student", "name email")
+        .populate("therapist", "name specialization")
+        .sort({ createdAt: -1 });
+
+      return res.json(therapistAppointments);
+    }
+
     const appointments = await Appointment.find({
       student: req.user._id,
-    }).populate("therapist", "name specialization");
+    })
+      .populate("therapist", "name specialization")
+      .sort({ createdAt: -1 });
 
     res.json(appointments);
   } catch (error) {

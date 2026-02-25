@@ -12,6 +12,8 @@ import MyAppointments from "../pages/student/MyAppointments";
 import ManageAppointments from "../pages/admin/ManageAppointments";
 import ManageTherapists from "../pages/admin/ManageTherapists";
 import Forum from "../pages/student/Forum";
+import ManageAvailability from "../pages/therapist/ManageAvailability";
+import ManageUsers from "../pages/admin/ManageUsers";
 function AppRoutes() {
   return (
     <Routes>
@@ -37,7 +39,7 @@ function AppRoutes() {
       <Route
         path="/student/appointments"
         element={
-          <ProtectedRoute role={["student", "therapist"]}>
+          <ProtectedRoute role="student">
             <Appointments />
           </ProtectedRoute>
         }
@@ -71,6 +73,22 @@ function AppRoutes() {
         element={
           <ProtectedRoute role="admin">
             <ManageTherapists />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/users"
+        element={
+          <ProtectedRoute role="admin">
+            <ManageUsers />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/therapist/availability"
+        element={
+          <ProtectedRoute role="therapist">
+            <ManageAvailability />
           </ProtectedRoute>
         }
       />

@@ -15,6 +15,12 @@ const slotSchema = new mongoose.Schema({
 
 const therapistSchema = new mongoose.Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      unique: true,
+      sparse: true,
+    },
     name: {
       type: String,
       required: true,

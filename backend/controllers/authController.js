@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import Therapist from "../models/Therapist.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -10,7 +11,7 @@ const generateToken = (id) => {
 
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, specialization, bio } = req.body;
 
     const userExists = await User.findOne({ email });
     if (userExists) {
@@ -26,6 +27,16 @@ export const registerUser = async (req, res) => {
       password: hashedPassword,
       role,
     });
+
+    if (user.role === "therapist") {
+      await Therapist.create({
+        user: user._id,
+        name,
+        specialization: specialization || "General Counseling",
+        bio: bio || "",
+        availableSlots: [],
+      });
+    }
 
     res.status(201).json({
       _id: user._id,
@@ -63,7 +74,7 @@ export const loginUser = async (req, res) => {
 
 export const createTherapistUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, specialization, bio } = req.body;
 
     if (!name || !email || !password) {
       return res
@@ -86,12 +97,32 @@ export const createTherapistUser = async (req, res) => {
       role: "therapist",
     });
 
+    await Therapist.create({
+      user: user._id,
+      name,
+      specialization: specialization || "General Counseling",
+      bio: bio || "",
+      availableSlots: [],
+    });
+
     res.status(201).json({
       _id: user._id,
       name: user.name,
       email: user.email,
       role: user.role,
     });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({}, "name email role createdAt").sort({
+      createdAt: -1,
+    });
+
+    res.json(users);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -23,14 +23,23 @@ function Navbar() {
           { to: "/admin/resources", label: "Resources" },
           { to: "/admin/appointments", label: "Appointments" },
           { to: "/admin/therapists", label: "Therapists" },
+          { to: "/admin/users", label: "Users" },
         ]
-      : [
-          { to: "/student", label: "Dashboard" },
-          { to: "/student/resources", label: "Resources" },
-          { to: "/student/forum", label: "Forum" },
-          { to: "/student/appointments", label: "Book Session" },
-          { to: "/student/my-appointments", label: "My Sessions" },
-        ];
+      : user.role === "therapist"
+        ? [
+            { to: "/student", label: "Dashboard" },
+            { to: "/therapist/availability", label: "My Free Time" },
+            { to: "/student/resources", label: "Resources" },
+            { to: "/student/forum", label: "Forum" },
+            { to: "/student/my-appointments", label: "My Sessions" },
+          ]
+        : [
+            { to: "/student", label: "Dashboard" },
+            { to: "/student/resources", label: "Resources" },
+            { to: "/student/forum", label: "Forum" },
+            { to: "/student/appointments", label: "Book Session" },
+            { to: "/student/my-appointments", label: "My Sessions" },
+          ];
 
   return (
     <header className="topbar">

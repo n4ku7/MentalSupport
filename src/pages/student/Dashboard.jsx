@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContextObject";
 
 function Dashboard() {
+  const { user } = useContext(AuthContext);
+
   return (
     <section className="stack">
       <header className="page-header">
-        <h1 className="page-title">Student Dashboard</h1>
+        <h1 className="page-title">
+          {user?.role === "therapist" ? "Therapist Dashboard" : "Student Dashboard"}
+        </h1>
         <p className="page-subtitle">
           Track your mental wellness journey and upcoming care actions.
         </p>
@@ -23,17 +29,31 @@ function Dashboard() {
           </div>
         </article>
 
-        <article className="card">
-          <h3 className="card-title">Book Appointment</h3>
-          <p className="card-text">
-            Find available therapist slots and schedule your next session.
-          </p>
-          <div className="row" style={{ marginTop: 12 }}>
-            <Link className="btn btn-secondary" to="/student/appointments">
-              Book Session
-            </Link>
-          </div>
-        </article>
+        {user?.role === "therapist" ? (
+          <article className="card">
+            <h3 className="card-title">My Free Time</h3>
+            <p className="card-text">
+              Add and manage your available slots for student booking.
+            </p>
+            <div className="row" style={{ marginTop: 12 }}>
+              <Link className="btn btn-secondary" to="/therapist/availability">
+                Manage Availability
+              </Link>
+            </div>
+          </article>
+        ) : (
+          <article className="card">
+            <h3 className="card-title">Book Appointment</h3>
+            <p className="card-text">
+              Find available therapist slots and schedule your next session.
+            </p>
+            <div className="row" style={{ marginTop: 12 }}>
+              <Link className="btn btn-secondary" to="/student/appointments">
+                Book Session
+              </Link>
+            </div>
+          </article>
+        )}
 
         <article className="card">
           <h3 className="card-title">My Appointments</h3>

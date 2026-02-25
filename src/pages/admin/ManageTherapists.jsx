@@ -21,6 +21,8 @@ function ManageTherapists() {
     name: "",
     email: "",
     password: "",
+    specialization: "",
+    bio: "",
   });
 
   const loadTherapists = async () => {
@@ -92,8 +94,15 @@ function ManageTherapists() {
 
     try {
       await createTherapistUser(userForm);
-      setUserForm({ name: "", email: "", password: "" });
+      setUserForm({
+        name: "",
+        email: "",
+        password: "",
+        specialization: "",
+        bio: "",
+      });
       showToast("Therapist user account created", "success");
+      await loadTherapists();
     } catch (error) {
       showToast(
         error.response?.data?.message || "Failed to create therapist user",
@@ -206,6 +215,32 @@ function ManageTherapists() {
                 }
                 placeholder="Create temporary password"
                 required
+              />
+            </label>
+
+            <label className="form-label">
+              Specialization
+              <input
+                className="input"
+                name="specialization"
+                value={userForm.specialization}
+                onChange={(event) =>
+                  setUserForm({ ...userForm, specialization: event.target.value })
+                }
+                placeholder="e.g. Anxiety, CBT"
+              />
+            </label>
+
+            <label className="form-label">
+              Bio
+              <textarea
+                className="textarea"
+                name="bio"
+                value={userForm.bio}
+                onChange={(event) =>
+                  setUserForm({ ...userForm, bio: event.target.value })
+                }
+                placeholder="Professional summary"
               />
             </label>
 

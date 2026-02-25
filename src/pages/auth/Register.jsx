@@ -15,6 +15,8 @@ function Register() {
     email: "",
     password: "",
     role: "student",
+    specialization: "",
+    bio: "",
   });
 
   const handleChange = (e) => {
@@ -31,7 +33,13 @@ function Register() {
       login(data);
       showToast("Account created successfully", "success");
 
-      navigate(data.role === "admin" ? "/admin" : "/student");
+      if (data.role === "admin") {
+        navigate("/admin");
+      } else if (data.role === "therapist") {
+        navigate("/therapist/availability");
+      } else {
+        navigate("/student");
+      }
     } catch (error) {
       showToast(
         error.response?.data?.message || "Registration failed",
@@ -93,8 +101,34 @@ function Register() {
             <select className="select" name="role" onChange={handleChange}>
               <option value="student">Student</option>
               <option value="admin">Admin</option>
+              <option value="therapist">Therapist</option>
             </select>
           </label>
+
+          {form.role === "therapist" && (
+            <>
+              <label className="form-label">
+                Specialization
+                <input
+                  className="input"
+                  name="specialization"
+                  placeholder="e.g. Anxiety, CBT"
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+
+              <label className="form-label">
+                Bio
+                <textarea
+                  className="textarea"
+                  name="bio"
+                  placeholder="Professional summary"
+                  onChange={handleChange}
+                />
+              </label>
+            </>
+          )}
 
           <button
             className="btn btn-primary"

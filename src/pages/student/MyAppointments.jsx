@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { fetchMyAppointments } from "../../services/appointmentService";
 import AppointmentCard from "../../components/appointments/AppointmentCard";
+import { AuthContext } from "../../context/AuthContextObject";
 
 function MyAppointments() {
+  const { user } = useContext(AuthContext);
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
@@ -29,7 +31,11 @@ function MyAppointments() {
       ) : (
         <div className="grid grid-2">
           {appointments.map((appointment) => (
-            <AppointmentCard key={appointment._id} appointment={appointment} />
+            <AppointmentCard
+              key={appointment._id}
+              appointment={appointment}
+              showStudent={user?.role === "therapist"}
+            />
           ))}
         </div>
       )}
