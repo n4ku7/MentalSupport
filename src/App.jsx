@@ -5,7 +5,7 @@ import Footer from "./components/common/Footer";
 import Sidebar from "./components/common/Sidebar";
 import ToastViewport from "./components/common/ToastViewport";
 import { AuthContext } from "./context/AuthContextObject";
-
+import { Analytics } from "@vercel/analytics/react";
 function App() {
   const { user } = useContext(AuthContext);
 
@@ -26,6 +26,7 @@ function App() {
         )}
       </main>
       <Footer />
+      <Analytics />
     </div>
   );
 }
