@@ -21,10 +21,16 @@ export const getTherapists = async (req, res) => {
 
 export const getMyTherapistProfile = async (req, res) => {
   try {
-    const therapist = await Therapist.findOne({ user: req.user._id });
+    let therapist = await Therapist.findOne({ user: req.user._id });
 
     if (!therapist) {
-      return res.status(404).json({ message: "Therapist profile not found" });
+      therapist = await Therapist.create({
+        user: req.user._id,
+        name: req.user.name,
+        specialization: "General Counseling",
+        bio: "",
+        availableSlots: [],
+      });
     }
 
     res.json(therapist);
@@ -41,10 +47,16 @@ export const addMyAvailability = async (req, res) => {
       return res.status(400).json({ message: "Date and time slots are required" });
     }
 
-    const therapist = await Therapist.findOne({ user: req.user._id });
+    let therapist = await Therapist.findOne({ user: req.user._id });
 
     if (!therapist) {
-      return res.status(404).json({ message: "Therapist profile not found" });
+      therapist = await Therapist.create({
+        user: req.user._id,
+        name: req.user.name,
+        specialization: "General Counseling",
+        bio: "",
+        availableSlots: [],
+      });
     }
 
     const normalizedSlots = [...new Set(timeSlots.map((slot) => String(slot).trim()).filter(Boolean))];
